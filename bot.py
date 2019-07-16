@@ -23,6 +23,14 @@ async def on_raw_reaction_add(payload):
         user = get(server.members, id=payload.user_id)
         getRole = get(server.roles, id=role[emotes.index(str(payload.emoji.name)[:1])])
         await user.add_roles(getRole)
+        
+@client.event
+async def on_raw_reaction_remove(payload):
+    if payload.channel_id == 432176723279216640 and payload.message_id == 439327580609445898: 
+        server = get(client.guilds, id=payload.guild_id)
+        user = get(server.members, id=payload.user_id)
+        getRole = get(server.roles, id=role[emotes.index(str(payload.emoji.name)[:1])])
+        await user.remove_roles(getRole)
 
 @client.command()
 @commands.is_owner()
