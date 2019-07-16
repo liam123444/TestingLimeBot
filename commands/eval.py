@@ -11,6 +11,7 @@ class Eval(commands.Cog):
     @commands.command(no_pm=True)
     @commands.is_owner()
     async def eval(self, ctx, *, e):
+        print(ctx.guild.name)
         try: 
             await ctx.send(f'`{str(eval(e))}`')
         except: 
