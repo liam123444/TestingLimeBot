@@ -18,7 +18,7 @@ async def on_ready():
 
 @client.event
 async def on_raw_reaction_add(payload):
-    if payload.channel_id == 600343727516680205 and payload.message_id == 600343767739924481: 
+    if payload.channel_id == 432176723279216640 and payload.message_id == 439327580609445898: 
         server = get(client.guilds, id=payload.guild_id)
         user = get(server.members, id=payload.user_id)
         getRole = get(server.roles, id=role[emotes.index(str(payload.emoji.name)[:1])])
