@@ -8,7 +8,7 @@ class Eval(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(no_pm=True)
     @commands.is_owner()
     async def eval(self, ctx, *, e):
         try: 
