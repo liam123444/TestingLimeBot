@@ -5,6 +5,7 @@ import os
 import random 
 
 client = commands.Bot(command_prefix=";", case_insensitive=True)
+client.remove_command("help")
 
 status = "How to train your dragon"
 
