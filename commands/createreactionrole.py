@@ -40,7 +40,7 @@ class Addreactionrole(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload): 
-        rr = await self.client.pg_con.fetch("SELECT * FROM reactionroles WHERE messageid=$1 AND emoji=$2", str(payload.message_id), payload.emoji.name)
+        rr = await self.client.pg_con.fetch("SELECT * FROM reactionroles WHERE messageid=$1 AND emoji=$2", str(payload.message_id), str(emoji))
         if len(rr) == 0:
             return
 
