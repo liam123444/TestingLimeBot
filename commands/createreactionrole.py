@@ -51,6 +51,19 @@ class Addreactionrole(commands.Cog):
         user = get(guild.members, id=payload.user_id)
         role = get(guild.roles, id=int(rr["roleid"]))
         await user.add_roles(role)
+        
+    @commands.Cog.listener()
+    async def on_raw_reaction_remove(self, payload): 
+        rr = await self.client.pg_con.fetch("SELECT * FROM reactionroles WHERE messageid=$1 AND emoji=$2", str(payload.message_id), str(payload.emoji))
+        if len(rr) == 0:
+            return
+
+        rr = rr[0]
+        guild = get(self.client.guilds, id=payload.guild_id)
+        user = get(guild.members, id=payload.user_id)
+        role = get(guild.roles, id=int(rr["roleid"]))
+        await user.remove_roles(role)
+
 
 
         
