@@ -4,6 +4,8 @@ from discord.ext.commands.cooldowns import BucketType
 from discord.utils import get
 import asyncpg
 
+#Hey
+
 class Addreactionrole(commands.Cog): 
 
     def __init__(self, client):
