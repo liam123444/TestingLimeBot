@@ -3,6 +3,15 @@ from discord.ext import commands
 from discord.utils import get
 import os
 import random 
+import asyncpg
+
+MyDB = os.getenv('DATABASE_URL')
+DB = MyDB.split(":")
+user = DB[1][2:]
+password = DB[2].split("@")[0]
+host = DB[2].split("@")[1]
+port = DB[3].split("/")[0]
+database = DB[3].split("/")[1]
 
 client = commands.Bot(command_prefix=";", case_insensitive=True)
 client.remove_command("help")
@@ -17,6 +26,10 @@ async def on_ready():
     print("The bot is ready")
     await client.change_presence(activity=discord.Activity(name=status, type=discord.ActivityType.watching))
 
+async def create_db_pool():
+    client.pg_con = await asyncpg.create_pool(database=database, user=user, password=password, host=host, port=port, ssl="require")
+
+    
 @client.event
 async def on_raw_reaction_add(payload):
     if payload.channel_id == 432176723279216640 and payload.message_id == 439327580609445898: 
