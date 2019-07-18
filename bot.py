@@ -6,6 +6,7 @@ import random
 import asyncpg
 
 MyDB = os.getenv('DATABASE_URL')
+print(MyDB)
 DB = MyDB.split(":")
 user = DB[1][2:]
 password = DB[2].split("@")[0]
