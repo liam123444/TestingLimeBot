@@ -6,7 +6,6 @@ import random
 import asyncpg
 
 MyDB = os.getenv('DATABASE_URL')
-print(MyDB)
 DB = MyDB.split(":")
 user = DB[1][2:]
 password = DB[2].split("@")[0]
@@ -67,4 +66,5 @@ for filename in os.listdir('./commands'):
     if filename.endswith('.py'):
         client.load_extension(f'commands.{filename[:-3]}')
 
+client.loop.run_until_complete(create_db_pool())  
 client.run(os.getenv('TOKEN'))
