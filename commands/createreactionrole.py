@@ -10,6 +10,7 @@ class Addreactionrole(commands.Cog):
         self.client = client
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def createreactionrole(self, ctx, msgid:str, roleid:str, emoji:str): 
         rr = await self.client.pg_con.fetch("SELECT * FROM reactionroles WHERE channelid=$1 AND messageid=$2 AND emoji=$3", str(ctx.channel.id), msgid, emoji)
         if len(rr) > 0: 
@@ -44,7 +45,6 @@ class Addreactionrole(commands.Cog):
             return
 
         rr = rr[0]
-        print(payload.__dir__())
         guild = get(self.client.guilds, id=payload.guild_id)
         user = get(guild.members, id=payload.user_id)
         role = get(guild.roles, id=int(rr["roleid"]))
