@@ -22,7 +22,8 @@ class Moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user : discord.Member, *, reason=None): 
         if ctx.author.top_role.position > user.top_role.position: 
-            await user.send(f"You have been banned from **{ctx.guild.name}**\nReason:`{reason}`")
+            try:
+                await user.send(f"You have been banned from **{ctx.guild.name}**\nReason:`{reason}`")
             await user.ban(reason=reason)
             await ctx.send(f"**{user.name}** has been banned by **{ctx.author.name}**\nReason:`{reason}`")
         else: 
