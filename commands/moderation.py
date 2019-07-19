@@ -8,7 +8,7 @@ class Moderation(commands.Cog):
         self.client = client
 
     @commands.command()
-    @commands.has_permissions(kick_members)
+    @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, user : discord.Member, *, reason=None): 
         await ctx.send(ctx.author.toprole.position)
         await ctx.send(user.toprole.position)
