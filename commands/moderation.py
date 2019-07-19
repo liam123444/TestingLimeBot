@@ -11,10 +11,8 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, user : discord.Member, *, reason=None): 
-        await ctx.send(get(ctx.guild.members, id=ctx.author.id).__dir__())
-        await ctx.send(get(ctx.guild.members, id=user.id).__dir__())
-        await ctx.send(ctx.author.__dir__())
-        await ctx.send(user.__dir__())
+        await ctx.send(ctx.author.top_role.position)
+        await ctx.send(user.top_role.position)
         
         
 def setup(client):
