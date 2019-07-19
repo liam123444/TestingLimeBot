@@ -24,6 +24,8 @@ class Moderation(commands.Cog):
         if ctx.author.top_role.position > user.top_role.position: 
             try:
                 await user.send(f"You have been banned from **{ctx.guild.name}**\nReason:`{reason}`")
+            except:
+                pass
             await user.ban(reason=reason)
             await ctx.send(f"**{user.name}** has been banned by **{ctx.author.name}**\nReason:`{reason}`")
         else: 
