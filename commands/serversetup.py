@@ -17,7 +17,7 @@ class ServerSetup(commands.Cog):
             await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None")
         
         server = await self.client.pg_con.fetchrow("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
-        mutedrole = get(ctx.guild.roles, id=int(mutedrole))
+        mutedrole = get(ctx.guild.roles, id=int(muterole))
         if mutedrole == None:
             await ctx.send("That's not a role id!")
             return
