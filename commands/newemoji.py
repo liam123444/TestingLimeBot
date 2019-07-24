@@ -10,7 +10,7 @@ class NewEmoji(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_emojis=True)
     async def newemoji(self, ctx, emojiname): 
-        image = ctx.message.attachments[0].read()
+        image = await ctx.message.attachments[0].read()
         await ctx.guild.create_custom_emoji(name=emojiname, image=image)
         await ctx.send(f"Created a new emoji! :{emojiname}:")
         
