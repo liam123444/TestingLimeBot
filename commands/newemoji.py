@@ -11,7 +11,9 @@ class NewEmoji(commands.Cog):
     @commands.has_permissions(manage_emojis=True)
     async def newemoji(self, ctx, emojiname): 
         image = await ctx.message.attachments[0].read()
-        await ctx.guild.create_custom_emoji(name=emojiname, image=image)
+        newemote = await ctx.guild.create_custom_emoji(name=emojiname, image=image)
+        print(newemote)
+        print(newemote.__dir__())
         await ctx.send(f"Created a new emoji! :{emojiname}:")
         
 def setup(client):
