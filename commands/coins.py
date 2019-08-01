@@ -16,7 +16,7 @@ class Coins(commands.Cog):
             user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
             name = ctx.author.name
         else:
-            user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", u.id)
+            user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(u.id))
             name = u.name
         
         if not user: 
