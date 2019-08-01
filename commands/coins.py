@@ -22,7 +22,6 @@ class Coins(commands.Cog):
         if not user: 
             await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(ctx.author.id))
 
-        user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
         await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + coins, str(ctx.author.id))
         await ctx.send(f"{name} has been given {coins} coins!")
 
