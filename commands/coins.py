@@ -11,13 +11,13 @@ class Coins(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def addcoins(self, ctx, coins:int, u:str = "None"): 
+    async def addcoins(self, ctx, coins:int, u:discord.Member = "None"): 
         if u == "None":
             user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
             name = ctx.author.name
         else:
-            user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", u[2:-1])
-            name = get(ctx.guild.members, id=int(u[2:-1])).name
+            user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", u.id)
+            name = u.name
         
         if not user: 
             await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(u[2:-1]))
