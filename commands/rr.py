@@ -19,6 +19,9 @@ class RR(commands.Cog):
             await ctx.send("You need coins to use this command.")
             return
         user = user[0]
+        if user['coins'] == 0: 
+            await ctx.send("You need coins to use this command.")
+            return
 
         if random.randint(1, 6) == 3: 
             await ctx.send(f":gun: BANG! It was the bullet, I revived you but someone stole some of your coins while you were out.\n**(You lost {math.ceil(user['coins']/2)} coins)**")
