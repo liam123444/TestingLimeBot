@@ -11,7 +11,7 @@ class Coins(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def addcoins(self, ctx, coins:int, u="None":str): 
+    async def addcoins(self, ctx, coins:int, u:str = "None"): 
         if u == "None":
             user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
         else:
