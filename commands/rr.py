@@ -17,6 +17,7 @@ class RR(commands.Cog):
         if not user: 
             await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(ctx.author.id))
             ctx.send("You don't have any coins to use this command.")
+            return
         user = user[0]
 
         if random.randint(1, 6) == 3: 
