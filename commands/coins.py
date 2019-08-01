@@ -27,7 +27,7 @@ class Coins(commands.Cog):
         else:
             user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", u[2:-1])
             
-        await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + coins, u[3:-1])
+        await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + coins, user['id'])
         await ctx.send(f"{name} has been given {coins} coins!")
 
     @commands.command()
