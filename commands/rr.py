@@ -16,12 +16,12 @@ class RR(commands.Cog):
         user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
         if not user: 
             await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(ctx.author.id))
-            ctx.send("You don't have any coins to use this command.")
+            await ctx.send("You need coins to use this command.")
             return
         user = user[0]
 
         if random.randint(1, 6) == 3: 
-            await ctx.send(f":gun: BANG! It was the bullet, I revived you but someone stole some of the cash while you were out.\n**(You lost {math.ceil(user['coins']/2)} coins)**")
+            await ctx.send(f":gun: BANG! It was the bullet, I revived you but someone stole some of your coins while you were out.\n**(You lost {math.ceil(user['coins']/2)} coins)**")
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] - math.ceil(user['coins']/2), str(ctx.author.id))    
 
         else:
