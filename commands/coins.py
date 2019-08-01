@@ -32,7 +32,7 @@ class Coins(commands.Cog):
 
     @commands.command()
     async def coins(self, ctx, u:discord.Member = "None"):
-        if discord.Member = "None":
+        if discord.Member == "None":
             u = ctx.author
         user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(u.id))
         if not user: 
