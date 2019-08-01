@@ -24,7 +24,7 @@ class Coins(commands.Cog):
 
         user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
         await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + coins, str(ctx.author.id))
-        await ctx.send(f"You have been given {coins} coins")
+        await ctx.send(f"{name} has been given {coins} coins!")
 
     @commands.command()
     async def coins(self, ctx):
@@ -34,7 +34,7 @@ class Coins(commands.Cog):
             await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(ctx.author.id))
 
         user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
-        await ctx.send(f"{name} has been given {user['coins']} coins!")
+        await ctx.send(f"You have {user['coins']} coins!")
 
 
 
