@@ -39,6 +39,7 @@ class Coins(commands.Cog):
             user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
         else:
             user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(u.id))
+            name = u.name
             
         if not user: 
             if u == "None":
@@ -50,7 +51,11 @@ class Coins(commands.Cog):
             user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
         else:
             user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(u.id))
-        await ctx.send(f"You have {user['coins']} coins!")
+        
+        if u == "None":
+            await ctx.send(f"You have {user['coins']} coins!")
+        else: 
+            await ctx.send(f"{name} has {user['coins']} coins!")         
 
 
 
