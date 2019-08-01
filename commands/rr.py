@@ -20,7 +20,7 @@ class RR(commands.Cog):
         user = user[0]
 
         if random.randint(1, 6) == 3: 
-            await ctx.send(f":gun: BANG! It was the bullet, I revived you but someone stole some of the cash while you were out.\n**(You lost{math.ceil(user["coins"]/2)} coins)**")
+            await ctx.send(f":gun: BANG! It was the bullet, I revived you but someone stole some of the cash while you were out.\n**(You lost{math.ceil(user['coins']/2)} coins)**")
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", math.ceil(user['coins']/2), str(ctx.author.id))    
 
         else:
