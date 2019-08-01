@@ -25,7 +25,7 @@ class RR(commands.Cog):
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] - math.ceil(user['coins']/2), str(ctx.author.id))    
 
         else:
-            await ctx.send(f":gun: BANG! The gun shot out coins! It must hurt but I'm sure it's worth it!\n **(You gained {math.ceil(user['coins']/5)} coins**")
+            await ctx.send(f":gun: BANG! The gun shot out coins! It must hurt but I'm sure it's worth it!\n **(You gained {math.ceil(user['coins']/5)} coins)**")
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + math.ceil(user['coins']/5), str(ctx.author.id))
         
 def setup(client):
