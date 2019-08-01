@@ -20,12 +20,12 @@ class Coins(commands.Cog):
             name = u.name
         
         if not user: 
-            await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(u[2:-1]))
+            await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(u.id))
         
         if u == "None":
             user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
         else:
-            user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", u[2:-1])
+            user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(u.id))
             
         await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + coins, user['id'])
         await ctx.send(f"{name} has been given {coins} coins!")
