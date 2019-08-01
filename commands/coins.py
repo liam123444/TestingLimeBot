@@ -31,13 +31,14 @@ class Coins(commands.Cog):
         await ctx.send(f"{name} has been given {coins} coins!")
 
     @commands.command()
-    async def coins(self, ctx):
-        user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
-        print(user[0])
+    async def coins(self, ctx, u:discord.Member = "None"):
+        if discord.Member = "None":
+            u = ctx.author
+        user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(u.id))
         if not user: 
-            await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(ctx.author.id))
+            await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(u.id))
 
-        user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
+        user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(u.id))
         await ctx.send(f"You have {user['coins']} coins!")
 
 
