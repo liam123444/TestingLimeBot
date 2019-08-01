@@ -1,0 +1,41 @@
+import discord
+from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
+from discord.utils import get
+import asyncpg
+
+class Coins(commands.Cog): 
+
+    def __init__(self, client):
+        self.client = client
+
+    @commands.command()
+    @commands.is_owner()
+    async def addcoins(self, ctx, coins:int, u="None":str): 
+        if u == "None":
+            user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
+        else:
+            user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", u[2:-1])
+
+        if not user: 
+            await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(ctx.author.id))
+
+        user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
+        await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + coins, str(ctx.author.id))
+        await ctx.send(f"You have been given {coins} coins")
+
+    @commands.command()
+    async def coins(self, ctx):
+        user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
+        print(user[0])
+        if not user: 
+            await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(ctx.author.id))
+
+        user = await self.client.pg_con.fetchrow("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
+        await ctx.send(f"You have {user['coins']} coins!")
+
+
+
+        
+def setup(client):
+    client.add_cog(Coins(client))
