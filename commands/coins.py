@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from discord.utils import get
 import random
+import math
 import asyncpg
 
 class Coins(commands.Cog): 
