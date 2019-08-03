@@ -35,7 +35,7 @@ class RR(commands.Cog):
                 await ctx.send(f":gun: BANG! It was the bullet but don't worry, I revived you!")
                 
         else:
-            await ctx.send(f":gun: BANG! The gods want you to live another day, it was a blank**")
+            await ctx.send(f":gun: BANG! The gods want you to live another day, it was a blank!")
         
 def setup(client):
     client.add_cog(RR(client))
