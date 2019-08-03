@@ -1,8 +1,10 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
+from discord.utils import get
 import random
 import asyncpg
+import asyncio
 import math
 
 class RR(commands.Cog): 
@@ -13,24 +15,27 @@ class RR(commands.Cog):
     @commands.command(aliases=["roulette", "russianroulette"])
     @commands.cooldown(1, 10, BucketType.user)
     async def rr(self, ctx): 
-        user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
-        if not user: 
-            await self.client.pg_con.execute("INSERT INTO users (id, coins) VALUES ($1, 0)", str(ctx.author.id))
-            await ctx.send("You need coins to use this command.")
-            return
-        user = user[0]
-        if user['coins'] == 0: 
-            await ctx.send("You need coins to use this command.")
-            return
+        server = await self.client.pg_con.fetch("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
+        if len(server) == 0: 
+            await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None")
+        server = await self.client.pg_con.fetchrow("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id)) 
+        if server['mutedrole'] != "None": 
+            role = get(ctx.guild.roles, id=int(server['mutedrole'])) 
+        else:
+            role = "None"
 
         if random.randint(1, 5) == 3: 
-            await ctx.send(f":gun: BANG! It was the bullet, I revived you but someone stole some of your coins while you were out.\n**(You lost {math.ceil(user['coins']/1.5)} coins)**")
-            await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] - random.randint(math.ceil(user['coins']/1.5), math.ceil(user['coins']/1.4)), str(ctx.author.id))    
-
+            if role != "None":
+                await ctx.send(f":gun: BANG! It was the bullet, I'll revive you but it may take some time!")
+                await ctx.author.add_roles(role)
+                asyncio.sleep(300)
+                await ctx.author.remove_roles(role)
+                await ctx.send(f"{ctx.author.mention} has been revived!")
+            else:    
+                await ctx.send(f":gun: BANG! It was the bullet but don't worry, I revived you!")
+                
         else:
-            gain = random.randint(math.ceil(user['coins']/12), math.ceil(user['coins']/8))
-            await ctx.send(f":gun: BANG! The gun shot out coins! It must hurt but I'm sure it's worth it!\n **(You gained {gain} coins)**")
-            await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + gain, str(ctx.author.id))
+            await ctx.send(f":gun: BANG! The gods want you to live another day, it was a blank**")
         
 def setup(client):
     client.add_cog(RR(client))
