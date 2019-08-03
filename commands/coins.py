@@ -57,8 +57,36 @@ class Coins(commands.Cog):
         else: 
             await ctx.send(f"{name} has {user['coins']} coins!")         
 
-
-
+    
+    @commands.command()
+    async def steal(self, ctx, u:discord.Member): 
+        you = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
+        if not you:
+            await ctx.send("You need atleast 1000 coins to use this command.")
+            return
+        if you[0]['coins'] < 1000:
+            await ctx.send("You need atleast 1000 coins to use this command.")
+            return             
+        user = user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(u.id))
+        if not user:
+            await ctx.send("The person you're stealing from needs atleast 1000 coins to rob from them.")
+            return
+        if user[0]['coins'] < 1000: 
+            await ctx.send("The person you're stealing from needs atleast 1000 coins to rob from them.")
+            return     
+        
+        rn = random.randint(0, 100)
+        if rn < 80: 
+            lose = random.randint(you[0]['coins']/6, you[0]['coins']/3)
+            await ctx.send(f"{u.name} caught you trying to steal their coins! They demanded compensation so you paid {lose} to them.")
+            await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", you[0]['coins'] - lose, you[0]['id'])
+            await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user[0]['coins'] + lose, user[0]['id'])
+        else:
+            win = random.randint(user[0]['coins']/8, user[0]['coins']/3)
+            await ctx.send(f"You've made a new enemy! :smiling_imp: \nYou stole {win} from {u.name}")
+            await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", you[0]['coins'] + win, you[0]['id'])
+            await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user[0]['coins'] - win, user[0]['id'])
+       
         
 def setup(client):
     client.add_cog(Coins(client))
