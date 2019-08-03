@@ -25,10 +25,10 @@ class RR(commands.Cog):
 
         if random.randint(1, 6) == 3: 
             await ctx.send(f":gun: BANG! It was the bullet, I revived you but someone stole some of your coins while you were out.\n**(You lost {math.ceil(user['coins']/1.5)} coins)**")
-            await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] - math.ceil(user['coins']/1.5), str(ctx.author.id))    
+            await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] - random.randint(math.ceil(user['coins']/1.5), math.ceil(user['coins']/1.4)), str(ctx.author.id))    
 
         else:
-            gain = random.randint(user['coins']/8, user['coins']/5)
+            gain = random.randint(math.ceil(user['coins']/8), math.ceil(user['coins']/5))
             await ctx.send(f":gun: BANG! The gun shot out coins! It must hurt but I'm sure it's worth it!\n **(You gained {gain} coins)**")
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user['coins'] + gain, str(ctx.author.id))
         
