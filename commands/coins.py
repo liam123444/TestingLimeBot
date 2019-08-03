@@ -15,7 +15,7 @@ class Coins(commands.Cog):
         return ctx.author.id == 188373113166102528 or ctx.author.id == 348538644887240716
     
     @commands.command()
-    @commands.check(paplooOrMe())
+    @commands.check(paplooOrMe)
     async def addcoins(self, ctx, coins:int, u:discord.Member = "None"): 
         if u == "None":
             user = await self.client.pg_con.fetch("SELECT * FROM users WHERE id = $1", str(ctx.author.id))
