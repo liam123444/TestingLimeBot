@@ -28,7 +28,7 @@ class RR(commands.Cog):
             if role != "None":
                 await ctx.send(f":gun: BANG! It was the bullet, I'll revive you but it may take some time!")
                 await ctx.author.add_roles(role)
-                asyncio.sleep(300)
+                await asyncio.sleep(300)
                 await ctx.author.remove_roles(role)
                 await ctx.send(f"{ctx.author.mention} has been revived!")
             else:    
