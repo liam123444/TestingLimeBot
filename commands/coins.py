@@ -80,12 +80,12 @@ class Coins(commands.Cog):
         rn = random.randint(0, 100)
         if rn < 80: 
             lose = random.randint(math.ceil(you[0]['coins']/6), math.ceil(you[0]['coins']/3))
-            await ctx.send(f"{u.name} caught you trying to steal their coins! They demanded compensation so you paid {lose} to them.")
+            await ctx.send(f"{u.name} caught you trying to steal their coins! They demanded compensation so you paid {lose} coins to them.")
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", you[0]['coins'] - lose, you[0]['id'])
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user[0]['coins'] + lose, user[0]['id'])
         else:
             win = random.randint(user[0]['coins']/8, user[0]['coins']/3)
-            await ctx.send(f"You've made a new enemy! :smiling_imp: \nYou stole {win} from {u.name}")
+            await ctx.send(f"You've made a new enemy! :smiling_imp: \nYou stole {win} coins from {u.name}")
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", you[0]['coins'] + win, you[0]['id'])
             await self.client.pg_con.execute("UPDATE users SET coins = $1 WHERE id=$2", user[0]['coins'] - win, user[0]['id'])
        
