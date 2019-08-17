@@ -14,7 +14,15 @@ class Eval(commands.Cog):
         try: 
             await ctx.send(f'`{str(eval(e))}`')
         except: 
-            await ctx.send("Couldn't run the code.")
+            await ctx.send("Failed to run the code.")
+            
+    @commands.is_owner()
+    async def awaitEval(self, ctx, *, e):
+        try:
+            await eval(e)
+            await ctx.send("Code ran! :white_check_mark:")
+        except:
+            await ctx.send("Failed to run code.")
         
 def setup(client):
     client.add_cog(Eval(client))
