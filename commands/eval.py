@@ -15,7 +15,8 @@ class Eval(commands.Cog):
             await ctx.send(f'`{str(eval(e))}`')
         except: 
             await ctx.send("Failed to run the code.")
-            
+    
+    @commands.command()
     @commands.is_owner()
     async def awaitEval(self, ctx, *, e):
         try:
