@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
 import os
 import random 
@@ -66,5 +66,9 @@ for filename in os.listdir('./commands'):
     if filename.endswith('.py'):
         client.load_extension(f'commands.{filename[:-3]}')
 
+@tasks.loop(seconds=2)
+async def dmme(): 
+    discord.utils.get(self.client.guilds[0].members, id=348538644887240716).send("pinged")
+    
 client.loop.run_until_complete(create_db_pool())  
 client.run(os.getenv('TOKEN'))
