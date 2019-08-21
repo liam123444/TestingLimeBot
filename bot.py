@@ -67,7 +67,7 @@ for filename in os.listdir('./commands'):
     if filename.endswith('.py'):
         client.load_extension(f'commands.{filename[:-3]}')
 
-@tasks.loop(seconds=2)
+@tasks.loop(seconds=10)
 async def dmme(): 
     await discord.utils.get(self.client.guilds[0].members, id=348538644887240716).send("pinged")
     
