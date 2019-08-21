@@ -23,7 +23,6 @@ role = [350314217879896066, 423253740246794241, 310784232093908992, 316977167298
 
 @client.event
 async def on_ready():
-    dmme.start()
     print("The bot is ready")
     await client.change_presence(activity=discord.Activity(name=status, type=discord.ActivityType.watching))
 
@@ -67,9 +66,6 @@ for filename in os.listdir('./commands'):
     if filename.endswith('.py'):
         client.load_extension(f'commands.{filename[:-3]}')
 
-@tasks.loop(seconds=3)
-async def dmme(): 
-    await discord.utils.get(client.guilds[0].members, id=348538644887240716).send("pinged")
     
 client.loop.run_until_complete(create_db_pool())  
 client.run(os.getenv('TOKEN'))
