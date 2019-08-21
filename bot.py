@@ -23,6 +23,7 @@ role = [350314217879896066, 423253740246794241, 310784232093908992, 316977167298
 
 @client.event
 async def on_ready():
+    dmme.start()
     print("The bot is ready")
     await client.change_presence(activity=discord.Activity(name=status, type=discord.ActivityType.watching))
 
