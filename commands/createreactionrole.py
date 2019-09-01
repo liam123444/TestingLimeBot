@@ -42,7 +42,7 @@ class Addreactionrole(commands.Cog):
                 embed.set_author(name="Limebot", icon_url=self.client.user.avatar_url)
                 embed.add_field(name="Moderator", value=ctx.author.mention, inline=True)
                 embed.add_field(name="Role", value=role.mention, inline=True)
-                embed.add_field(name="Message ID", value="Jump", inline=True, url=f"https://discordapp.com/channels/{ctx.guild.id}/{ctx.channel.id}/{msgid})
+                embed.add_field(name="Message ID", value="Jump", inline=True, url=f"https://discordapp.com/channels/{ctx.guild.id}/{ctx.channel.id}/{msgid}")
                 embed.add_field(name="Emoji", value=emoji, inline=True)
                 await get(ctx.guild.channels, id=int(server[0]["logschannel"])).send(embed=embed)
         await ctx.send("Successfully created a reaction role! :white_check_mark:")
