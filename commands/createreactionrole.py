@@ -11,7 +11,8 @@ class Addreactionrole(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def createreactionrole(self, ctx, msgid:str, roleid:str, emoji:str): 
+    async def createreactionrole(self, ctx, msgid:str, roleid:discord.Role, emoji:str): 
+        roleid = str(roleid.id)
         rr = await self.client.pg_con.fetch("SELECT * FROM reactionroles WHERE channelid=$1 AND messageid=$2 AND emoji=$3", str(ctx.channel.id), msgid, emoji)
         server = await self.client.pg_con.fetch("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
         if len(rr) > 0: 
@@ -37,11 +38,11 @@ class Addreactionrole(commands.Cog):
         await self.client.pg_con.execute("INSERT INTO reactionroles (messageid, roleid, channelid, emoji) VALUES ($1, $2, $3, $4)", msgid, roleid, str(ctx.channel.id), emoji)
         if len(server) > 0: 
             if server[0]["logschannel"] != "None": 
-                embed = discord.Embed(title="Logs | Reactionrole", description="The server's mute role has been changed.")
+                embed = discord.Embed(title="Logs | Reactionrole", description="New Reactionrole")
                 embed.set_author(name="Limebot", icon_url=self.client.user.avatar_url)
                 embed.add_field(name="Moderator", value=ctx.author.mention, inline=True)
                 embed.add_field(name="Role", value=role.mention, inline=True)
-                embed.add_field(name="Message ID", value=msgid, inline=True)
+                embed.add_field(name="Message ID", value="Jump", inline=True, url=f"https://discordapp.com/channels/{ctx.guild.id}/{ctx.channel.id}/{msgid})
                 embed.add_field(name="Emoji", value=emoji, inline=True)
                 await get(ctx.guild.channels, id=int(server[0]["logschannel"])).send(embed=embed)
         await ctx.send("Successfully created a reaction role! :white_check_mark:")
