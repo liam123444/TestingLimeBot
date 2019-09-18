@@ -16,18 +16,14 @@ class Bday(commands.Cog):
         [252416555785256960, datetime.datetime(2019, 12, 9), "William"], 
         [282218272651345920, datetime.datetime(2019, 9, 23), "ssorsuper"]
     ]
-    async def getNextBirthday(): 
-        bdays = sorted(bdays, key=lambda bdays: bdays[1])
-        if bdays[0].strftime("%x") < datetime.datetime.strftime("%x"): 
-            bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
-            getNextBirthday()
-        else: 
-            return bdays[0]
             
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
     async def bday(self, ctx):
-        getNextBirthday()
+        bdays = sorted(bdays, key=lambda bdays: bdays[1])
+        if bdays[0].strftime("%x") < datetime.datetime.strftime("%x"): 
+            bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
+            bdays = sorted(bdays, key=lambda bdays: bdays[1])
         ctx.send(f"It is {bdays[0][2]}'s birthday in {(bdays[0][1]-datetime.datetime.now()).days+1} days")
 
         
