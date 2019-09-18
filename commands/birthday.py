@@ -37,6 +37,10 @@ class Bday(commands.Cog):
             embed = discord.Embed(title="Next Birthday", description=f"It will be <@{bdays[0]['id']}>'s birthday in {(bdays[0]['bday']-datetime.datetime.now()).days+1} days")
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def bcheck(self, ctx): 
+        print(bdays[0]['bday'])
+        print(type(bdays[0]['bday']))
         
 def setup(client):
     client.add_cog(Bday(client))
