@@ -7,20 +7,18 @@ class Bday(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-    
-    bdays = [
-        [188373113166102528, datetime.datetime(2020, 9, 17), "Paploo"], 
-        [171244585773826048, datetime.datetime(2020, 4, 28), "Yotta"], 
-        [461593347316776960, datetime.datetime(2019, 10, 25), "JB"], 
-        [241650038776791041, datetime.datetime(2020, 6, 25), "Jason"], 
-        [252416555785256960, datetime.datetime(2019, 12, 9), "William"], 
-        [282218272651345920, datetime.datetime(2019, 9, 23), "ssorsuper"]
-    ]
             
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
     async def bday(self, ctx):
-        global bdays
+        bdays = [
+            [188373113166102528, datetime.datetime(2020, 9, 17), "Paploo"], 
+            [171244585773826048, datetime.datetime(2020, 4, 28), "Yotta"], 
+            [461593347316776960, datetime.datetime(2019, 10, 25), "JB"], 
+            [241650038776791041, datetime.datetime(2020, 6, 25), "Jason"], 
+            [252416555785256960, datetime.datetime(2019, 12, 9), "William"], 
+            [282218272651345920, datetime.datetime(2019, 9, 23), "ssorsuper"]
+        ]
         bdays = sorted(bdays, key=lambda bdays: bdays[1])
         if bdays[0].strftime("%x") < datetime.datetime.strftime("%x"): 
             bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
