@@ -39,7 +39,7 @@ class Bday(commands.Cog):
 
     @commands.command()
     @commands.check(paplooOrMe)
-    async def bedit, ctx, person:discord.Member, bday): 
+    async def bedit(self, ctx, person:discord.Member, bday): 
         bday = bday.split("-")
         await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE id = $2", datetime.datetime(int(bday[0]), int(bday[1]), int(bday[2])), str(person.id))
         await ctx.send("Added!")
