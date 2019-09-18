@@ -23,7 +23,7 @@ class Bday(commands.Cog):
         if bdays[0][1].strftime("%x") < datetime.datetime.now().strftime("%x"): 
             bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
             bdays = sorted(bdays, key=lambda bdays: bdays[1])
-        ctx.send(f"It is {bdays[0][2]}'s birthday in {(bdays[0][1]-datetime.datetime.now()).days+1} days")
+        await ctx.send(f"It is {bdays[0][2]}'s birthday in {(bdays[0][1]-datetime.datetime.now()).days+1} days")
 
         
 def setup(client):
