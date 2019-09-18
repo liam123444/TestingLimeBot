@@ -16,7 +16,7 @@ class Bday(commands.Cog):
         [252416555785256960, datetime.datetime(2019, 12, 9), "William"], 
         [282218272651345920, datetime.datetime(2019, 9, 23), "ssorsuper"]
     ]
-    def getNextBirthday(): 
+    async def getNextBirthday(): 
         bdays = sorted(bdays, key=lambda bdays: bdays[1])
         if bdays[0].strftime("%x") < datetime.datetime.strftime("%x"): 
             bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
