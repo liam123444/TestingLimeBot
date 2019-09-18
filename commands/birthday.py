@@ -2,12 +2,15 @@ import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 import datetime
+import asyncpg 
 
 class Bday(commands.Cog): 
 
     def __init__(self, client):
         self.client = client
-            
+    
+    @commands.command()
+    
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
     async def bday(self, ctx):
@@ -23,10 +26,13 @@ class Bday(commands.Cog):
             [234275916363202560, datetime.datetime(2020, 6, 25), "Dave"], 
             [191283118752268288, datetime.datetime(2020, 3, 29), "Eggs"]
         ]
-        bdays = sorted(bdays, key=lambda bdays: bdays[1])
+        bdays = await self.client.pg_con.fetch("SELECT * FROM bdays")
+        bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
         if bdays[0][1].strftime("%x") < datetime.datetime.now().strftime("%x"): 
             bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
-            bdays = sorted(bdays, key=lambda bdays: bdays[1])
+            await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE bday = $2", f"{bdays[0][1].strftime("%Y")}-{bdays[0][1].strftime("%m")}-{bdays[0][1].strftime("%d")}", f"{int(bdays[0][1].strftime("%Y"))-1}-{bdays[0][1].strftime("%m")}-{bdays[0][1].strftime("%d")}"
+            bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
+            
         
         if (bdays[0][1]-datetime.datetime.now()).days+1 == 0: 
             embed = discord.Embed(title="Birthday :tada:", description=f"It is <@{bdays[0][0]}>'s birthday today! Say happy birthday! :tada:")
