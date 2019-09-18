@@ -39,6 +39,7 @@ class Bday(commands.Cog):
 
     @commands.command()
     async def bcheck(self, ctx): 
+        bdays = await self.client.pg_con.fetch("SELECT * FROM bdays")
         print(bdays[0]['bday'])
         print(type(bdays[0]['bday']))
         
