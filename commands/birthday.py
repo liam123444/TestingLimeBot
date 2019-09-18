@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 import datetime
 import asyncpg 
-#ok
+#ok paps
 
 class Bday(commands.Cog): 
 
