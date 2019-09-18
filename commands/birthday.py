@@ -37,7 +37,7 @@ class Bday(commands.Cog):
         bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
         if bdays[0][1].strftime("%x") < datetime.datetime.now().strftime("%x"): 
             bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
-            await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE bday = $2", f"{bdays[0][1].strftime("%Y")}-{bdays[0][1].strftime("%m")}-{bdays[0][1].strftime("%d")}", f"{int(bdays[0][1].strftime("%Y"))-1}-{bdays[0][1].strftime("%m")}-{bdays[0][1].strftime("%d")}")
+            await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE bday = $2", f"{bdays[0][1].strftime('%Y')}-{bdays[0][1].strftime('%m')}-{bdays[0][1].strftime('%d')}", f"{int(bdays[0][1].strftime('%Y'))-1}-{bdays[0][1].strftime('%m')}-{bdays[0][1].strftime('%d')}")
             bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
             
         
