@@ -23,22 +23,10 @@ class Bday(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
     async def bday(self, ctx):
-        bdays = [
-            [188373113166102528, datetime.datetime(2020, 9, 17), "Paploo"], 
-            [171244585773826048, datetime.datetime(2020, 4, 28), "Yotta"], 
-            [461593347316776960, datetime.datetime(2019, 10, 25), "JB"], 
-            [241650038776791041, datetime.datetime(2020, 6, 25), "Jason"], 
-            [252416555785256960, datetime.datetime(2019, 12, 9), "William"], 
-            [282218272651345920, datetime.datetime(2019, 9, 23), "ssorsuper"], 
-            [188344626543853568, datetime.datetime(2020, 7, 17), "scruffy"], 
-            [417626694166249484, datetime.datetime(2020, 4, 16), "Chao"], 
-            [234275916363202560, datetime.datetime(2020, 6, 25), "Dave"], 
-            [191283118752268288, datetime.datetime(2020, 3, 29), "Eggs"]
-        ]
         bdays = await self.client.pg_con.fetch("SELECT * FROM bdays")
         bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
         if datetime.datetime.fromordinal(bdays[0]['bday']).strftime("%x") < datetime.datetime.now().strftime("%x"): 
-            await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE id = $2", datetime.datetime(int(bdays[0]['bday'].strftime('%Y'))+1, int(bdays[0]['bday'].strftime('%m')), int(bdays[0]['bday'].strftime('%d')), bdays[0]['id'])
+            await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE id = $2", datetime.datetime(int(bdays[0]['bday'].strftime('%Y'))+1, int(bdays[0]['bday'].strftime('%m')), int(bdays[0]['bday'].strftime('%d'))), bdays[0]['id'])
             bdays = await self.client.pg_con.fetch("SELECT * FROM bdays")
             bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
             
