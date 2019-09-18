@@ -16,7 +16,8 @@ class Bday(commands.Cog):
     @commands.command()
     @commands.check(paplooOrMe)
     async def addbday(self, ctx, person:discord.Member, bday): 
-        await self.client.pg_con.execute("INSERT INTO bdays (id, bday) VALUES ($1, $2)", str(person.id), bday)
+        bday = bday.split("-")
+        await self.client.pg_con.execute("INSERT INTO bdays (id, bday) VALUES ($1, $2)", str(person.id), datetime.datetime(int(bday[0]), int(bday[1]), int(bday[2])))
         await ctx.send("Added!")
     
     @commands.command()
