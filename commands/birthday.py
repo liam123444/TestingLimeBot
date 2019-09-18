@@ -38,10 +38,11 @@ class Bday(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def bcheck(self, ctx): 
-        bdays = await self.client.pg_con.fetch("SELECT * FROM bdays")
-        print(bdays[0]['bday'])
-        print(type(bdays[0]['bday']))
+    @commands.check(paplooOrMe)
+    async def bedit, ctx, person:discord.Member, bday): 
+        bday = bday.split("-")
+        await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE id = $2", datetime.datetime(int(bday[0]), int(bday[1]), int(bday[2])), str(person.id))
+        await ctx.send("Added!")
         
 def setup(client):
     client.add_cog(Bday(client))
