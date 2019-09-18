@@ -9,7 +9,14 @@ class Bday(commands.Cog):
     def __init__(self, client):
         self.client = client
     
+    def paplooOrMe(ctx): 
+        return ctx.author.id == 188373113166102528 or ctx.author.id == 348538644887240716
+    
     @commands.command()
+    @commands.check(paplooOrMe)
+    async def addbday(self, ctx, person:discord.Member, bday): 
+        await self.client.pg_con.execute("INSERT INTO bdays (id, bday) VALUES ($1, $2)", str(person.id), bday)
+        await ctx.send("Added!")
     
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
