@@ -37,16 +37,16 @@ class Bday(commands.Cog):
         ]
         bdays = await self.client.pg_con.fetch("SELECT * FROM bdays")
         bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
-        if bdays[0][1].strftime("%x") < datetime.datetime.now().strftime("%x"): 
-            await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE id = $2", f"{int(bdays[0][1].strftime('%Y'))+1}-{bdays[0][1].strftime('%m')}-{bdays[0][1].strftime('%d')}", bdays[0][0])
+        if bdays[0]['bday'].strftime("%x") < datetime.datetime.now().strftime("%x"): 
+            await self.client.pg_con.execute("UPDATE bdays SET bday = $1 WHERE id = $2", f"{int(bdays[0]['bday'].strftime('%Y'))+1}-{bdays[0]['bday'].strftime('%m')}-{bdays[0]['bday'].strftime('%d')}", bdays[0][0])
             bdays = await self.client.pg_con.fetch("SELECT * FROM bdays")
             bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
             
         
-        if (bdays[0][1]-datetime.datetime.now()).days+1 == 0: 
-            embed = discord.Embed(title="Birthday :tada:", description=f"It is <@{bdays[0][0]}>'s birthday today! Say happy birthday! :tada:")
+        if (bdays[0]['bday']-datetime.datetime.now()).days+1 == 0: 
+            embed = discord.Embed(title="Birthday :tada:", description=f"It is <@{bdays[0]['id']}>'s birthday today! Say happy birthday! :tada:")
         else: 
-            embed = discord.Embed(title="Next Birthday", description=f"It will be <@{bdays[0][0]}>'s birthday in {(bdays[0][1]-datetime.datetime.now()).days+1} days")
+            embed = discord.Embed(title="Next Birthday", description=f"It will be <@{bdays[0]['id']}>'s birthday in {(bdays[0]['bday']-datetime.datetime.now()).days+1} days")
         await ctx.send(embed=embed)
 
         
