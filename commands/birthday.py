@@ -28,7 +28,7 @@ class Bday(commands.Cog):
             bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
             bdays = sorted(bdays, key=lambda bdays: bdays[1])
         
-        if bdays[0][1]-datetime.datetime.now().days+1 == 0: 
+        if (bdays[0][1]-datetime.datetime.now()).days+1 == 0: 
             embed = discord.Embed(title="Birthday :tada:", description=f"It is <@{bdays[0][0]}>'s birthday today! Say happy birthday! :tada:")
         else: 
             embed = discord.Embed(title="Next Birthday", description=f"It will be <@{bdays[0][0]}>'s birthday in {(bdays[0][1]-datetime.datetime.now()).days+1} days")
