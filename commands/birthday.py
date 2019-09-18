@@ -31,10 +31,10 @@ class Bday(commands.Cog):
             bdays = sorted(bdays, key=lambda bdays: bdays['bday'])
             
         
-        if (datetime.datetime.combine(bdays[0]['bday'], datetime.datetime.min.time())-datetime.date.now()).days+1 == 0: 
+        if (datetime.datetime.combine(bdays[0]['bday'], datetime.datetime.min.time())-datetime.datetime.now()).days+1 == 0: 
             embed = discord.Embed(title="Birthday :tada:", description=f"It is <@{bdays[0]['id']}>'s birthday today! Say happy birthday! :tada:")
         else: 
-            embed = discord.Embed(title="Next Birthday", description=f"It will be <@{bdays[0]['id']}>'s birthday in {(bdays[0]['bday']-datetime.datetime.now()).days+1} days")
+            embed = discord.Embed(title="Next Birthday", description=f"It will be <@{bdays[0]['id']}>'s birthday in {datetime.datetime.combine(bdays[0]['bday'], datetime.datetime.min.time())-datetime.datetime.now()).days+1} days")
         await ctx.send(embed=embed)
 
     @commands.command()
