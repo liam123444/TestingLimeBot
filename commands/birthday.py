@@ -20,6 +20,7 @@ class Bday(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
     async def bday(self, ctx):
+        global bdays
         bdays = sorted(bdays, key=lambda bdays: bdays[1])
         if bdays[0].strftime("%x") < datetime.datetime.strftime("%x"): 
             bdays[0][1] = datetime.datetime(int(datetime.datetime.now().strftime("%Y"))+1, int(bdays[0][1].strftime("%m")), int(bdays[0][1].strftime("%d")))
