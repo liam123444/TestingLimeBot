@@ -61,18 +61,19 @@ class ServerSetup(commands.Cog):
             await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel, banned_words) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None", "")
         
         server = await self.client.pg_con.fetchrow("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
-        print(str(server['banned_words']))
-        banned_words = server['banned_words'].split()
-        if word.lower() in banned_words: 
+        banned_words = server['banned_words']
+        if str(banned_words) == "None": 
+            banned_words = ""
+        if word.lower() in banned_words.split(): 
             await ctx.send("This word is already banned")
             return
         else: 
-            await self.client.pg_con.execute("UPDATE servers SET banned_words = $1 WHERE serverid=$2", f"{server['banned_words']} {word.lower()}", str(ctx.guild.id))
+            await self.client.pg_con.execute("UPDATE servers SET banned_words = $1 WHERE serverid=$2", f"{banned_words} {word.lower()}", str(ctx.guild.id))
             await ctx.send("The word has been banned!")
          
     @commands.Cog.listener() 
     async def on_message(self, message):
-        server = await self.client.pg_con.fetch("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
+        server = await self.client.pg_con.fetch("SELECT * FROM servers WHERE serverid=$1", str(message.guild.id))
         if len(server) == 0: 
             return
         server = server[0]
