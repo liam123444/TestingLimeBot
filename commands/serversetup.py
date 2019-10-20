@@ -61,6 +61,7 @@ class ServerSetup(commands.Cog):
             await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel, banned_words) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None", "")
         
         server = await self.client.pg_con.fetchrow("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
+        print(str(server['banned_words']))
         banned_words = server['banned_words'].split()
         if word.lower() in banned_words: 
             await ctx.send("This word is already banned")
