@@ -66,7 +66,7 @@ class ServerSetup(commands.Cog):
             await ctx.send("This word is already banned")
             return
         else: 
-            await self.client.pg_con.execute("UPDATE servers SET banned_words = $1 WHERE serverid=$2", f"{server['banned_words']} {word.lower()}, str(ctx.guild.id))
+            await self.client.pg_con.execute("UPDATE servers SET banned_words = $1 WHERE serverid=$2", f"{server['banned_words']} {word.lower()}", str(ctx.guild.id))
             await ctx.send("The word has been banned!")
          
     @commands.Cog.listener() 
