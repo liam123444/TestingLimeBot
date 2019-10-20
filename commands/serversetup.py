@@ -14,7 +14,7 @@ class ServerSetup(commands.Cog):
     async def muterole(self, ctx, muterole:str): 
         server = await self.client.pg_con.fetch("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
         if len(server) == 0: 
-            await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None")
+            await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel, banned_words) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None", "")
         
         server = await self.client.pg_con.fetchrow("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
         mutedrole = get(ctx.guild.roles, id=int(muterole))
@@ -36,7 +36,7 @@ class ServerSetup(commands.Cog):
     async def logschannel(self, ctx, ch:str): 
         server = await self.client.pg_con.fetch("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
         if len(server) == 0: 
-            await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None")
+            await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel, banned_words) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None", "")
         
         server = await self.client.pg_con.fetchrow("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
         logsc = get(ctx.guild.channels, id=int(ch))
@@ -52,7 +52,33 @@ class ServerSetup(commands.Cog):
             await get(ctx.guild.channels, id=int(server['logschannel'])).send(embed=embed)
 
         await ctx.send("The mute role has been changed! :white_check_mark:")
-
+    
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def banword(self, ctx, word):
+        server = await self.client.pg_con.fetch("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
+        if len(server) == 0: 
+            await self.client.pg_con.execute("INSERT INTO servers (serverid, mutedrole, logschannel, banned_words) VALUES ($1, $2, $3)", str(ctx.guild.id), "None", "None", "")
+        
+        server = await self.client.pg_con.fetchrow("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
+        banned_words = server['banned_words'].split()
+        if word.lower() in banned_words: 
+            await ctx.send("This word is already banned")
+            return
+        else: 
+            await self.client.pg_con.execute("UPDATE servers SET banned_words = $1 WHERE serverid=$2", f"{server['banned_words']} {word.lower()}, str(ctx.guild.id))
+            await ctx.send("The word has been banned!")
+         
+    @commands.Cog.listener() 
+    async def on_message(self, message):
+        server = await self.client.pg_con.fetch("SELECT * FROM servers WHERE serverid=$1", str(ctx.guild.id))
+        if len(server) == 0: 
+            return
+        server = server[0]
+        for word in server['banned_words'].split(): 
+            if word in message.content: 
+                await message.delete()
+                break;
         
 def setup(client):
     client.add_cog(ServerSetup(client))
